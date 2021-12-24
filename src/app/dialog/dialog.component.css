@@ -1,0 +1,6 @@
+.trade-form > div {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  text-align: right;
+}
