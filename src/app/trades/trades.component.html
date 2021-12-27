@@ -1,4 +1,38 @@
 <div class="trades-wrapper">
-  <button mat-raised-button (click)="openDialog()">Add Trade</button>
-</div>
-
+    <div class="trades-container">
+      <div *ngFor="let trade of trades; let i = index" class="trade">
+        <div class="trade-card">
+          <div class="trade-card-content">
+            <div >
+              <label>Start price:</label>
+              {{trade.start_price}}
+            </div>
+            <div>
+              <label>End price:</label>
+              {{trade.end_price}}
+            </div>
+            <div>
+              <label>Profit:</label>
+              {{trade.profit}}
+            </div>
+            <div>
+              <label>Entry date:</label>
+              {{trade.entry_date}}
+            </div>
+            <div>
+              <label>Exit date:</label>
+              {{trade.exit_date}}
+            </div>
+          </div>
+          <div>
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              (click)="openTread(i)"
+            >edit</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button mat-raised-button (click)="openNewTread()">Add Trade</button>
+  </div>

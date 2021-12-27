@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {TradesComponent} from "./trades/trades.component";
+import {ChartsComponent} from "./charts/charts.component";
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: 'treads', component: TradesComponent },
+  { path: 'chart', component: ChartsComponent },
+  { path: '', redirectTo: '/treads', pathMatch: 'full' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

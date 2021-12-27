@@ -1,36 +1,33 @@
 <h1 mat-dialog-title>Trade Add Form</h1>
 <div mat-dialog-content>
-  <form [formGroup]="buyTicketForm" novalidate class="trade-form">
-
-    <div >
-      <label>Passenger:</label>
-      <input matInput type="date" formControlName="entry_date"/>
-    </div>
-
+  <form [formGroup]="tradeForm" (ngSubmit)="saveTrade()" novalidate class="trade-form">
     <div>
-      <label>Age:</label>
+      <label>Entry date:</label>
+      <input type="date" formControlName="entry_date"/>
+    </div>
+    <div>
+      <label>Exit date:</label>
       <input matInput type="date" formControlName="exit_date"/>
     </div>
-
     <div>
-      <label>Telegram:</label>
+      <label>Start price:</label>
       <input matInput type="number" formControlName="start_price"/>
     </div>
-
     <div>
-      <label>Whatsapp:</label>
+      <label>End price:</label>
       <input matInput type="number" formControlName="end_price"/>
     </div>
-
     <div>
-      <label>Whatsapp:</label>
-      <input matInput type="number" formControlName="profit"/>
-
+      <label>Profit:</label>
+      <input matInput type="number" readonly formControlName="profit"/>
     </div>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="onNoClick()">
+  <button mat-raised-button (click)="saveTrade()">
     + Add
+  </button>
+  <button mat-raised-button (click)="onNoClick()">
+    Close
   </button>
 </div>

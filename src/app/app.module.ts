@@ -11,12 +11,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {DialogComponent} from "./dialog/dialog.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
+import { ChartsComponent } from './charts/charts.component';
+import {NgxEchartsModule} from "ngx-echarts";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
     AppComponent,
     TradesComponent,
-    DialogComponent
+    DialogComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +31,10 @@ import {MatInputModule} from "@angular/material/input";
     MatDialogModule,
     ReactiveFormsModule,
     MatInputModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
