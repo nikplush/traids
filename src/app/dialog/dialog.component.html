@@ -24,10 +24,15 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="saveTrade()">
+  <button *ngIf="data.index === undefined; else elseBlock" mat-raised-button (click)="saveTrade()">
     + Add
   </button>
   <button mat-raised-button (click)="onNoClick()">
     Close
   </button>
 </div>
+<ng-template #elseBlock>
+  <button mat-raised-button (click)="changeTrade()">
+    Change
+  </button>
+</ng-template>

@@ -19,21 +19,24 @@ export class DialogComponent implements OnInit, OnDestroy {
     profit: new FormControl(this.data.profit, [this.profitValidator()]),
   }, [this.dateRangeValidator()])
   subscriptions: Subscription[];
+  undefined = undefined;
 
   constructor(
     private tradeService: TradeService,
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TradeData,
   ) {
+
+
     this.subscriptions = [
       this.tradeForm.get('start_price')!.valueChanges.subscribe(
         value => {
-          const end_price = this.tradeForm.get('end_price')?.value
-          this.tradeForm.patchValue({profit: (end_price - value) })
+          const end_price = this.tradeForm.get('end_price')?.value;
+          this.tradeForm.patchValue({profit: (end_price - value)});
         }),
       this.tradeForm.get('end_price')!.valueChanges.subscribe(value => {
-        const start_price = this.tradeForm.get('start_price')?.value
-        this.tradeForm.patchValue({profit: (value - start_price) })
+        const start_price = this.tradeForm.get('start_price')?.value;
+        this.tradeForm.patchValue({profit: (value - start_price)});
       }),
 
     ]
@@ -44,11 +47,17 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   saveTrade(): void {
-    if (this.tradeForm.invalid) {
-      return;
+    if (!this.tradeForm.invalid) {
+      this.tradeService.addItem(this.tradeForm.value);
+      this.dialogRef.close();
     }
-    this.tradeService.addItem(this.tradeForm.value)
-    this.dialogRef.close();
+  }
+
+  changeTrade(): void {
+    if ((this.data.index || this.data.index === 0)  && !this.tradeForm.invalid) {
+      this.tradeService.updateTrade(this.data.index, this.tradeForm.value);
+      this.dialogRef.close();
+    }
   }
 
   ngOnInit(): void {
@@ -63,10 +72,10 @@ export class DialogComponent implements OnInit, OnDestroy {
       const formGroup = abstractControl as FormGroup;
       const startDate = formGroup.controls.entry_date;
       const exitDate = formGroup.controls.exit_date;
-      const transformedStartDate = new Date(startDate?.value).getTime()
-      const transformedEndDate = new Date(exitDate?.value).getTime()
-      if (transformedStartDate > transformedEndDate) {
-        return {'invalidDateRange': true}
+      const transformedStartDate = new Date(startDate?.value).getTime();
+      const transformedEndDate = new Date(exitDate?.value).getTime();
+      if (transformedStartDate >= transformedEndDate) {
+        return {'invalidDateRange': true};
       }
       return null;
     }
@@ -75,7 +84,8 @@ export class DialogComponent implements OnInit, OnDestroy {
   profitValidator(): ValidatorFn {
     return (abstractControl: AbstractControl) => {
       const value = abstractControl.value;
-      if (value < this.data.permissibleProfit) {
+      const a = value - this.data.profit;
+      if (a < 0 && -a > this.data.permissibleProfit) {
         return {'shouldBePositive': true};
       }
       return null;

@@ -10,9 +10,9 @@ import {TradeService} from "../trade.service";
 export class ChartsComponent implements OnInit {
 
   constructor(private tradeService: TradeService) { }
-  dates: string[] = []
-  values: number[] = []
-  sums: number[] = []
+  dates: string[] = [];
+  values: number[] = [];
+  sums: number[] = [];
 
   chartOfProfitOption: EChartsOption = {
     xAxis: {
@@ -47,12 +47,12 @@ export class ChartsComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    let sum: number = 0
+    let sum: number = 0;
     this.tradeService.trades.forEach(item => {
-      this.dates.push(item.exit_date)
-      this.values.push(item.profit)
-      sum += item.profit
-      this.sums.push(sum)
+      this.dates.push(item.exit_date);
+      this.values.push(item.profit);
+      sum += item.profit;
+      this.sums.push(sum);
     })
   }
 

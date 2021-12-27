@@ -10,6 +10,7 @@ export interface TradeData {
   end_price: number,
   profit: number
   permissibleProfit: number
+  index?: number
 }
 
 @Component({
@@ -24,18 +25,18 @@ export class TradesComponent implements OnInit {
   ) {
   }
 
-  trades = this.tradeService.trades
+  trades = this.tradeService.trades;
 
   openNewTread(): void {
-    const today = new Date()
-    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000))
+    const today = new Date();
+    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
     const initValues: TradeData = {
       entry_date: today.toISOString().split('T')[0],
       exit_date: tomorrow.toISOString().split('T')[0],
       start_price: 0,
       end_price: 0,
       profit: 0,
-      permissibleProfit: this.tradeService.balance
+      permissibleProfit: this.tradeService.balance,
     }
 
     this.dialog.open(DialogComponent, {
@@ -45,11 +46,10 @@ export class TradesComponent implements OnInit {
   }
 
   openTread(index: number): void {
-    const {trade, permissibleProfit} = this.tradeService.getTrade(index)
-
+    const {trade, permissibleProfit} = this.tradeService.getTrade(index);
     this.dialog.open(DialogComponent, {
       width: '33%',
-      data: {...trade, permissibleProfit},
+      data: {...trade, permissibleProfit, isNew: false, index},
     });
   }
 
