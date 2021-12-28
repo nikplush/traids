@@ -1,9 +1,15 @@
+import {Subscription} from "rxjs";
 import {Component, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {TradeData} from "../trades/trades.component";
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {TradeService} from "../trade.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dialog',

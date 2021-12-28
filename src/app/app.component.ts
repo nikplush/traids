@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TradeService} from "./trade.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'traids';
+  constructor(private readonly tradeService: TradeService,) {}
+  title = 'trades';
+  isDisableCharts: boolean = !this.tradeService.trades.length
 }

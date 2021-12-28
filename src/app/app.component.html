@@ -1,7 +1,7 @@
 <div class="header">
   <nav>
     <a routerLink="/treads">Treads</a>
-    <a routerLink="/chart">Charts</a>
+    <a [ngClass]="{'disable_link':isDisableCharts}" routerLink="/chart">Charts</a>
   </nav>
 </div>
 <router-outlet></router-outlet>

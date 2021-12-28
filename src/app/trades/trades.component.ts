@@ -11,6 +11,7 @@ export interface TradeData {
   profit: number;
   permissibleProfit: number;
   index?: number;
+  balance?: number;
 }
 
 @Component({
@@ -20,10 +21,9 @@ export interface TradeData {
 })
 export class TradesComponent {
   constructor(
+    private readonly tradeService: TradeService,
     public readonly dialog: MatDialog,
-    private readonly tradeService: TradeService
-  ) {
-  }
+  ) {}
 
   trades = this.tradeService.trades;
 
@@ -50,7 +50,7 @@ export class TradesComponent {
     const {trade, permissibleProfit} = this.tradeService.getTrade(index);
     this.dialog.open(DialogComponent, {
       width: '33%',
-      data: {...trade, permissibleProfit, isNew: false, index},
+      data: {...trade, permissibleProfit, index},
     });
   }
 

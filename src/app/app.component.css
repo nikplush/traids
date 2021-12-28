@@ -12,4 +12,15 @@ a {
   background: white;
   margin: 5px;
   color: #000000;
+
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.disable_link {
+  pointer-events: none;
+  color: #a4a4a4;
 }

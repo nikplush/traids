@@ -11,11 +11,12 @@ export class ChartsComponent implements OnInit {
 
   constructor(private readonly tradeService: TradeService) {
   }
-
-  treads: any[] = this.tradeService.trades
+  treads: TradeData[] = this.tradeService.trades
   dates: string[] = [];
   values: number[] = [];
   sums: number[] = [];
+  chartOfProfitOption: EChartsOption = this.tradeService.generateConfig(this.dates, this.values)
+  chartOfSumOption: EChartsOption = this.tradeService.generateConfig(this.dates, this.sums)
 
   private sortAndConcat(): TradeData[] {
     let transformedTrades: TradeData[] = []
@@ -25,9 +26,9 @@ export class ChartsComponent implements OnInit {
           const sameDataTrades = this.treads.filter(item => tread.exit_date === item.exit_date)
           addedDates.push(tread.exit_date)
           if (sameDataTrades.length) {
-            const c = {...tread, profit: 0}
-            sameDataTrades.forEach(item => c.profit += item.profit)
-            transformedTrades.push(c)
+            const newTread = {...tread, profit: 0}
+            sameDataTrades.forEach(item => newTread.profit += item.profit)
+            transformedTrades.push(newTread)
           }
         }
       }
@@ -40,7 +41,7 @@ export class ChartsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const transformedData: any[] = this.sortAndConcat()
+    const transformedData: TradeData[] = this.sortAndConcat()
     let sum: number = 0;
     transformedData.forEach(item => {
       this.dates.push(item.exit_date);
@@ -49,38 +50,6 @@ export class ChartsComponent implements OnInit {
       this.sums.push(sum);
     })
   }
-
-  chartOfProfitOption: EChartsOption = {
-    xAxis: {
-      type: 'category',
-      data: this.dates,
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: this.values,
-        type: 'line',
-      },
-    ],
-  };
-
-  chartOfSumOption: EChartsOption = {
-    xAxis: {
-      type: 'category',
-      data: this.dates,
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: this.sums,
-        type: 'line',
-      },
-    ],
-  };
 
 
 }

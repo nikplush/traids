@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {EChartsOption} from "echarts";
 
 export interface TradeData {
   entry_date: string;
@@ -9,20 +10,25 @@ export interface TradeData {
   balance: number;
 }
 
+export interface SelectedTrade {
+  trade: TradeData;
+  permissibleProfit: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class TradeService {
+export class TradeService{
   trades: TradeData[] = [];
   balance: number = 0;
 
-  private countBalance () {
+  private countBalance():void{
     let sum: number = 0;
     this.trades.forEach(item => sum += item.profit );
     this.balance = sum;
   }
 
-  private getPermissibleProfit (index: number) {
+  private getPermissibleProfit( index: number ):number {
     let count: number = this.trades[index].balance;
     for(let i = index; i < this.trades.length; i++){
       if (this.trades[i].balance < count ) {
@@ -32,19 +38,37 @@ export class TradeService {
     return count;
   }
 
-  public getTrade (index: number) {
+  public getTrade( index: number ):SelectedTrade {
     const permissibleProfit =  this.getPermissibleProfit(index);
     return {trade:this.trades[index], permissibleProfit };
   }
 
-  public updateTrade (index: number, trade: TradeData ) {
+  public updateTrade( index: number, trade: TradeData ):void{
     this.trades[index] = trade;
   }
 
-  public addItem (newTrade: TradeData) {
+  public addItem( newTrade: TradeData ):void {
     const transformData = {...newTrade, balance: this.balance + newTrade.profit};
     this.trades.push(transformData);
     this.countBalance();
+  }
+
+  public generateConfig(dates:string[], values:number[]):EChartsOption {
+    return {
+      xAxis: {
+        type: 'category',
+        data: dates,
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: values,
+          type: 'line',
+        },
+      ],
+    };
   }
 
   constructor() { }
