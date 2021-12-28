@@ -26,9 +26,7 @@ export class DialogComponent implements OnDestroy {
   }, [this.dateRangeValidator()])
   subscriptions: Subscription[];
 
-  constructor(
-    private readonly tradeService: TradeService,
-    public readonly dialogRef: MatDialogRef<DialogComponent>,
+  constructor(public readonly dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TradeData,
   ) {
 
@@ -55,14 +53,12 @@ export class DialogComponent implements OnDestroy {
     if (this.tradeForm.invalid) {
       return;
     }
-    this.tradeService.addItem(this.tradeForm.value);
-    this.dialogRef.close();
+    this.dialogRef.close({ trade: this.tradeForm.value });
   }
 
   changeTrade(): void {
-    if ((this.data.index || this.data.index === 0)  && this.tradeForm.valid) {
-      this.tradeService.updateTrade(this.data.index, this.tradeForm.value);
-      this.dialogRef.close();
+    if (( this.data.index !== undefined)  && this.tradeForm.valid) {
+      this.dialogRef.close({ trade: this.tradeForm.value, index: this.data.index });
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {TradeService} from "./trade.service";
+import {TradeData, TradeService} from "./trade.service";
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,6 @@ import {TradeService} from "./trade.service";
 export class AppComponent {
   constructor(private readonly tradeService: TradeService,) {}
   title = 'trades';
-  isDisableCharts: boolean = !this.tradeService.trades.length
+  trade: TradeData[] = this.tradeService.trades
+  isDisableCharts: boolean = !this.trade.length
 }

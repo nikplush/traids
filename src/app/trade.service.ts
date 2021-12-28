@@ -24,8 +24,10 @@ export class TradeService{
 
   private countBalance():void{
     let sum: number = 0;
-    this.trades.forEach(item => sum += item.profit );
-    this.balance = sum;
+    this.trades = this.trades.map(item => {
+      sum += item.profit
+      return {...item, balance: sum}
+    } );
   }
 
   private getPermissibleProfit( index: number ):number {
@@ -43,14 +45,15 @@ export class TradeService{
     return {trade:this.trades[index], permissibleProfit };
   }
 
-  public updateTrade( index: number, trade: TradeData ):void{
+  public updateTrade( trade: TradeData, index: number, ):void{
     this.trades[index] = trade;
+    this.countBalance()
   }
 
   public addItem( newTrade: TradeData ):void {
     const transformData = {...newTrade, balance: this.balance + newTrade.profit};
     this.trades.push(transformData);
-    this.countBalance();
+    this.balance += newTrade.profit;
   }
 
   public generateConfig(dates:string[], values:number[]):EChartsOption {

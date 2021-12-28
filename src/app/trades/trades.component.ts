@@ -23,7 +23,8 @@ export class TradesComponent {
   constructor(
     private readonly tradeService: TradeService,
     public readonly dialog: MatDialog,
-  ) {}
+  ) {
+  }
 
   trades = this.tradeService.trades;
 
@@ -40,21 +41,35 @@ export class TradesComponent {
       permissibleProfit: this.tradeService.balance,
     }
 
-    this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       width: '33%',
       data: initValues,
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.tradeService.addItem(result.trade);
+      }
+    })
   }
 
   openTreadDialog(index: number): void {
     const {trade, permissibleProfit} = this.tradeService.getTrade(index);
-    this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       width: '33%',
       data: {...trade, permissibleProfit, index},
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const {trade, index} = result
+        this.tradeService.updateTrade(trade, index);
+      }
+    })
   }
 
-  convertingDateToString(date: Date):string {
+
+  convertingDateToString(date: Date): string {
     return date.toISOString().split('T')[0]
   }
 
