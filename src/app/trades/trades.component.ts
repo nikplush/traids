@@ -1,16 +1,16 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Component} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {TradeService} from "../trade.service";
 
 export interface TradeData {
-  entry_date: string,
-  exit_date: string,
-  start_price: number,
-  end_price: number,
-  profit: number
-  permissibleProfit: number
-  index?: number
+  entry_date: string;
+  exit_date: string;
+  start_price: number;
+  end_price: number;
+  profit: number;
+  permissibleProfit: number;
+  index?: number;
 }
 
 @Component({
@@ -18,21 +18,22 @@ export interface TradeData {
   templateUrl: 'trades.component.html',
   styleUrls: ['./trades.component.css']
 })
-export class TradesComponent implements OnInit {
+export class TradesComponent {
   constructor(
-    public dialog: MatDialog,
-    private tradeService: TradeService
+    public readonly dialog: MatDialog,
+    private readonly tradeService: TradeService
   ) {
   }
 
   trades = this.tradeService.trades;
 
-  openNewTread(): void {
+  openAddTreadDialog(): void {
     const today = new Date();
-    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
     const initValues: TradeData = {
-      entry_date: today.toISOString().split('T')[0],
-      exit_date: tomorrow.toISOString().split('T')[0],
+      entry_date: this.convertingDateToString(today),
+      exit_date: this.convertingDateToString(tomorrow),
       start_price: 0,
       end_price: 0,
       profit: 0,
@@ -45,7 +46,7 @@ export class TradesComponent implements OnInit {
     });
   }
 
-  openTread(index: number): void {
+  openTreadDialog(index: number): void {
     const {trade, permissibleProfit} = this.tradeService.getTrade(index);
     this.dialog.open(DialogComponent, {
       width: '33%',
@@ -53,8 +54,8 @@ export class TradesComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-
+  convertingDateToString(date: Date):string {
+    return date.toISOString().split('T')[0]
   }
 
 }

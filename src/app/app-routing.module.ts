@@ -6,7 +6,7 @@ import {ChartsComponent} from "./charts/charts.component";
 const routes: Routes = [
   { path: 'treads', component: TradesComponent },
   { path: 'chart', component: ChartsComponent },
-  { path: '', redirectTo: '/treads', pathMatch: 'full' },
+  { path: '**', redirectTo: '/treads'}
 ];
 
 @NgModule({

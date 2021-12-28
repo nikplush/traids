@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 export interface TradeData {
-  entry_date: string,
-  exit_date: string,
-  start_price: number,
-  end_price: number,
-  profit: number,
-  balance: number
+  entry_date: string;
+  exit_date: string;
+  start_price: number;
+  end_price: number;
+  profit: number;
+  balance: number;
 }
 
 @Injectable({
@@ -41,7 +41,7 @@ export class TradeService {
     this.trades[index] = trade;
   }
 
-  addItem (newTrade: TradeData) {
+  public addItem (newTrade: TradeData) {
     const transformData = {...newTrade, balance: this.balance + newTrade.profit};
     this.trades.push(transformData);
     this.countBalance();

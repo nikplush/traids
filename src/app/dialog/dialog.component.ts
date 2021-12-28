@@ -1,7 +1,7 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {TradeData} from "../trades/trades.component";
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 import {TradeService} from "../trade.service";
 import {Subscription} from "rxjs";
 
@@ -19,11 +19,10 @@ export class DialogComponent implements OnInit, OnDestroy {
     profit: new FormControl(this.data.profit, [this.profitValidator()]),
   }, [this.dateRangeValidator()])
   subscriptions: Subscription[];
-  undefined = undefined;
 
   constructor(
-    private tradeService: TradeService,
-    public dialogRef: MatDialogRef<DialogComponent>,
+    private readonly tradeService: TradeService,
+    public readonly dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TradeData,
   ) {
 
@@ -47,14 +46,15 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   saveTrade(): void {
-    if (!this.tradeForm.invalid) {
-      this.tradeService.addItem(this.tradeForm.value);
-      this.dialogRef.close();
+    if (this.tradeForm.invalid) {
+      return;
     }
+    this.tradeService.addItem(this.tradeForm.value);
+    this.dialogRef.close();
   }
 
   changeTrade(): void {
-    if ((this.data.index || this.data.index === 0)  && !this.tradeForm.invalid) {
+    if ((this.data.index || this.data.index === 0)  && this.tradeForm.valid) {
       this.tradeService.updateTrade(this.data.index, this.tradeForm.value);
       this.dialogRef.close();
     }
