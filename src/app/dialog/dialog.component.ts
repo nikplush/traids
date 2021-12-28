@@ -1,7 +1,7 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {TradeData} from "../trades/trades.component";
-import {AbstractControl, FormControl, FormGroup, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {TradeService} from "../trade.service";
 import {Subscription} from "rxjs";
 
@@ -10,13 +10,13 @@ import {Subscription} from "rxjs";
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent implements OnInit, OnDestroy {
+export class DialogComponent implements OnDestroy {
   tradeForm: FormGroup = new FormGroup({
-    entry_date: new FormControl(this.data.entry_date),
-    exit_date: new FormControl(this.data.exit_date),
-    start_price: new FormControl(this.data.start_price),
-    end_price: new FormControl(this.data.end_price),
-    profit: new FormControl(this.data.profit, [this.profitValidator()]),
+    entry_date: new FormControl(this.data.entry_date, Validators.required),
+    exit_date: new FormControl(this.data.exit_date, Validators.required),
+    start_price: new FormControl(this.data.start_price, Validators.required),
+    end_price: new FormControl(this.data.end_price, Validators.required),
+    profit: new FormControl(this.data.profit, [this.profitValidator(),Validators.required],),
   }, [this.dateRangeValidator()])
   subscriptions: Subscription[];
 
@@ -58,9 +58,6 @@ export class DialogComponent implements OnInit, OnDestroy {
       this.tradeService.updateTrade(this.data.index, this.tradeForm.value);
       this.dialogRef.close();
     }
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy() {

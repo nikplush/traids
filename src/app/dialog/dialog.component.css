@@ -2,6 +2,22 @@
   margin-top: 5px;
   display: grid;
   grid-template-columns: 20% 80%;
-  text-align: right;
+  text-align: right;position: relative;
+  height: 45px;
 }
 
+input {
+  height: 20px;
+}
+
+.alert{
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+}
+.alert-danger {
+  color: red;
+}

@@ -8,6 +8,9 @@
     <div>
       <label>Exit date:</label>
       <input matInput type="date" formControlName="exit_date"/>
+      <div *ngIf="tradeForm.errors?.invalidDateRange" class="alert alert-danger">
+        invalid Date Range
+      </div>
     </div>
     <div>
       <label>Start price:</label>
@@ -20,6 +23,9 @@
     <div>
       <label>Profit:</label>
       <input matInput type="number" readonly formControlName="profit"/>
+      <div *ngIf="tradeForm.controls.profit.errors?.shouldBePositive" class="alert alert-danger">
+        invalid Profit Value
+      </div>
     </div>
   </form>
 </div>
